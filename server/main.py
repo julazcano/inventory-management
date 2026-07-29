@@ -1,7 +1,9 @@
+import random
+from datetime import datetime, timedelta
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, conlist
 from mock_data import inventory_items, orders, demand_forecasts, backlog_items, spending_summary, monthly_spending, category_spending, recent_transactions, purchase_orders
 
 app = FastAPI(title="Factory Inventory Management System")
@@ -89,6 +91,7 @@ class DemandForecast(BaseModel):
     forecasted_demand: int
     trend: str
     period: str
+    unit_cost: float
 
 class BacklogItem(BaseModel):
     id: str
@@ -119,6 +122,15 @@ class CreatePurchaseOrderRequest(BaseModel):
     unit_cost: float
     expected_delivery_date: str
     notes: Optional[str] = None
+
+class RestockingOrderItem(BaseModel):
+    sku: str
+    name: str
+    quantity: int = Field(gt=0)
+    unit_price: float = Field(gt=0)
+
+class RestockingOrderRequest(BaseModel):
+    items: conlist(RestockingOrderItem, min_length=1)
 
 # API endpoints
 @app.get("/")
@@ -165,6 +177,30 @@ def get_order(order_id: str):
 def get_demand_forecasts():
     """Get demand forecasts"""
     return demand_forecasts
+
+@app.post("/api/restocking", response_model=Order)
+def create_restocking_order(request: RestockingOrderRequest):
+    """Submit a restocking order built from budget-based recommendations"""
+    order_date = datetime.now()
+    delivery_days = random.randint(7, 14)
+    expected_delivery = order_date + timedelta(days=delivery_days)
+
+    items = [item.model_dump() for item in request.items]
+    total_value = round(sum(item["quantity"] * item["unit_price"] for item in items), 2)
+    new_id = str(len(orders) + 1)
+
+    new_order = {
+        "id": new_id,
+        "order_number": f"RST-{order_date.year}-{new_id.zfill(4)}",  # RST prefix distinguishes restocking from customer ORD- orders
+        "customer": "Internal Restocking",
+        "items": items,
+        "status": "Submitted",
+        "order_date": order_date.isoformat(timespec='seconds'),
+        "expected_delivery": expected_delivery.isoformat(timespec='seconds'),
+        "total_value": total_value
+    }
+    orders.append(new_order)
+    return new_order
 
 @app.get("/api/backlog", response_model=List[BacklogItem])
 def get_backlog():
