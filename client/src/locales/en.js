@@ -214,6 +214,31 @@ export default {
     orderSubmitted: 'Order {orderNumber} submitted — view it in the Orders tab'
   },
 
+  // Purchase Order Modal
+  purchaseOrder: {
+    createTitle: 'Create Purchase Order',
+    viewTitle: 'Purchase Order Details',
+    itemLabel: 'Item',
+    skuLabel: 'SKU',
+    shortageLabel: 'Shortage',
+    supplierName: 'Supplier Name',
+    supplierNamePlaceholder: 'Enter supplier name...',
+    quantity: 'Quantity',
+    unitCost: 'Unit Cost',
+    totalCost: 'Total Cost',
+    expectedDeliveryDate: 'Expected Delivery Date',
+    notes: 'Notes',
+    notesPlaceholder: 'Optional notes...',
+    submit: 'Create Purchase Order',
+    submitting: 'Creating...',
+    createError: 'Failed to create purchase order',
+    loading: 'Loading purchase order...',
+    notFound: 'No purchase order found for this item',
+    supplier: 'Supplier',
+    status: 'Status',
+    createdDate: 'Created Date'
+  },
+
   // Filters
   filters: {
     timePeriod: 'Time Period',

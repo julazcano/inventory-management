@@ -214,6 +214,31 @@ export default {
     orderSubmitted: '注文{orderNumber}が提出されました — 注文タブでご確認ください'
   },
 
+  // Purchase Order Modal
+  purchaseOrder: {
+    createTitle: '発注書を作成',
+    viewTitle: '発注書の詳細',
+    itemLabel: '品目',
+    skuLabel: 'SKU',
+    shortageLabel: '不足数',
+    supplierName: 'サプライヤー名',
+    supplierNamePlaceholder: 'サプライヤー名を入力...',
+    quantity: '数量',
+    unitCost: '単価',
+    totalCost: '合計コスト',
+    expectedDeliveryDate: '納品予定日',
+    notes: '備考',
+    notesPlaceholder: '備考（任意）...',
+    submit: '発注書を作成',
+    submitting: '作成中...',
+    createError: '発注書の作成に失敗しました',
+    loading: '発注書を読み込み中...',
+    notFound: 'この品目の発注書が見つかりません',
+    supplier: 'サプライヤー',
+    status: 'ステータス',
+    createdDate: '作成日'
+  },
+
   // Filters
   filters: {
     timePeriod: '期間',
